@@ -3,12 +3,35 @@
 
 import SwiftUI
 
-struct Navigations: View {
+struct Navigations<Root: View>: View {
+    var root: ()->Root
+    @Binding var path: Path
+    
+    init(path: Binding<Path>, root: @escaping () -> Root) {
+        self._path = path
+        self.root = root
+    }
+    
+    init(root: @escaping () -> Root) {
+        self._path = .constant(Path())
+        self.root = root
+    }
+    
     var body: some View {
-        /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Hello, world!@*/Text("Hello, world!")/*@END_MENU_TOKEN@*/
+        VStack {
+            HStack{
+                Text("title")
+            }
+            
+            root()
+        }
     }
 }
 
+public struct Path {
+    
+}
+
 #Preview {
-    Navigations()
+    Navigations(root: {Text("")})
 }
